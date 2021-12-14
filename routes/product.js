@@ -8,7 +8,7 @@ const {
 
 
 //aanmaken van een product 
-router.post("/",validateTokenAdmin, async (req,res) =>{
+router.post("/", async (req,res) =>{
     const product = new Product(req.body)
     
     try{
@@ -40,12 +40,12 @@ router.put("/:id", validateTokenAdmin, async (req, res) => {
 
 
 //user verwijderen
-router.delete("/:id", validateTokenAdmin, async (req, res) => {
+router.delete("/:id", /*validateTokenAdmin,*/ async (req, res) => {
 
     try{
         const deletedPrd = Product.findById(req.params.id).title;
         await Product.findByIdAndDelete(req.params.id);
-        res.status(200).json("Product %s is deleted",deletedPrd);
+        res.status(200).json(deletedPrd);
     }catch(err){
         res.status(500).json(err)
     }
@@ -53,12 +53,12 @@ router.delete("/:id", validateTokenAdmin, async (req, res) => {
 
 
 //product halen
-router.get("/find/:id", validateTokenAdmin, async (req, res) => {
-
+router.get("/find/:id", async (req, res) => {
+    console.log("inside /find/:id ")
     try{
         
-        const getUser = await Product.findById(req.params.id);
-        res.status(200).json("Verwijderen van gebruiker is gelukt.")
+        const getProduct = await Product.findById(req.params.id);
+        res.status(200).json(getProduct)
     }catch(err){
         res.status(500).json(err)
     }

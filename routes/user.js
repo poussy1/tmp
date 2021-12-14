@@ -45,7 +45,7 @@ router.delete("/:id", validateTokenAuthorisation, async (req, res) => {
 
 
 //user halen
-router.get("/find/:id", async (req, res) => {
+router.get("/find/:id",validateTokenAdmin ,async (req, res) => {
 
     try{
         
@@ -57,44 +57,20 @@ router.get("/find/:id", async (req, res) => {
     }
 });
 
-//alle user halen
-router.get("/", async (req, res) => {
-
-    const query = req.query.new;
-    const queryCategory = req.query.cat;
-    try{
-        if(query){
-            const getAllProducts = await Product.find().sort({ _id: -1});
-        }else if (queryCategory){
-            const getAllProducts = await Product.find({
-                categories: {
-                    $in: [queryCategory]
-                }
-            });
-        }else {
-            const getAllProducts = await Product.find()
-        }
-
-        res.status(200).json(getAllProducts)
-    }catch(err){
-        res.status(500).json(err)
-    }
-});
-
-
 //alle users halen
-router.get("/find/", validateTokenAdmin, async (req, res) => {
-    const query = req.query.new;
-    try{
-        const getAllUsers = query
-        ? await User.find().sort({ _id: -1 }).limit(1)
-        : await User.find();
-
-        res.status(200).json(getAllUsers)
-    }catch(err){
-        res.status(500).json(err)
-    }
+router.get("/", validateTokenAdmin ,async (req, res) => {
+  const query = req.query.new;
+  try {
+    const users = query
+      ? await User.find().sort({ _id: -1 }).limit(5)
+      : await User.find();
+    res.status(200).json(users);
+  } catch (err) {
+    res.status(500).json(err);
+  }
 });
+
+
 
 //TODO
 router.get("/stats", validateTokenAdmin, async (req, res) => {

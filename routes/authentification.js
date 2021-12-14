@@ -26,14 +26,14 @@ router.post("/register", async (req,res) =>{
 
 //aanmelden
 router.post("/signin", async  (req,res) =>{
-
+    
     try{
+       
         const user = await User.findOne({username: req.body.username});
-
+        
         !user && res.status(401).
         json("Combinatie is niet Juist (Gebruiker niet gevonden)");
 
-    
         const dbHash = CryptoJS.AES.decrypt(user.password, process.env.PASSWORD_KEY)
         .toString(CryptoJS.enc.Utf8);
 
@@ -49,7 +49,6 @@ router.post("/signin", async  (req,res) =>{
                 expiresIn:"1d"
             }
         );
-
         const { password, ...others } = user._doc;
         res.status(200).json({others, token});
     }catch(err){
