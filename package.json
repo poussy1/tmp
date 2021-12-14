@@ -11,7 +11,7 @@
   "name": "ulteamapi",
   "version": "1.0.0",
   "main": "index.js",
-  "scripts": {
+  "scripts": { 
     "start": "nodemon index.js"
   },
   "keywords": [],
